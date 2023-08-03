@@ -5,10 +5,7 @@ oc = nothing
 β = nothing
 #firma_ma = nothing
 #firma_loli = nothing
-α = 3 
-
-
-
+α = 60573 
 
 
 dict_x = Dict()
@@ -16,25 +13,20 @@ dict_y = Dict()
 lis = []
 puntos = ()
 
-for i in 0:16
+for i in 0:630
    
     #print(i)
-    dict_y[i] = (i^2) % 17#𝑦²
-    dict_x[i] = ((i^3) + (2*i) + 2) % 17#𝑥³+2𝑥+2
+    dict_y[i] = (i^2) % 631#𝑦²
+    dict_x[i] = ((i^3) + (2*i) + 2) % 631#𝑥³+2𝑥+2
    
 end
-
 
 ord_x = sort(dict_x)
 ord_y = sort(dict_y)
 
-
-#show(ord_x)
-#show(ord_y)
-
 lis = [(i,j) for i in  keys(ord_x), j in keys(ord_y) if  ord_x[i] == ord_y[j]]
-#show(lis)
 
+#show(lis)
 
 function suma_puntos(p1,p2)
     
@@ -60,10 +52,9 @@ function suma_puntos(p1,p2)
     
     
     if (isa(m,Int64))
-
         
-        x3 = mod((m^2 - x1 - x2) ,17)
-        y3 =mod((m * (x1 - x3 ) - y1) , 17)
+        x3 = mod((m^2 - x1 - x2) ,631)
+        y3 =mod((m * (x1 - x3 ) - y1) , 631)
         
     else
     
@@ -71,9 +62,9 @@ function suma_puntos(p1,p2)
         Como el grupo tiene domino en los enteros positivos se implenta esta condición para calcular el 
         inverso multiplicativo modular y evitar números fraccionarios 
         =#
-        m =  mod((y2 - y1)*(invmod( x2 - x1 ,17) ) , 17)
-        x3 = mod((m^2 - x1 - x2) , 17)
-        y3 = mod((m * (x1 - x3 ) - y1) , 17)
+        m =  mod((y2 - y1)*(invmod( x2 - x1 ,631) ) , 631)
+        x3 = mod((m^2 - x1 - x2) , 631)
+        y3 = mod((m * (x1 - x3 ) - y1) , 631)
     
     end
     
@@ -110,12 +101,12 @@ function mult_2(punto)#OjO point es una tupla
     
     if(isa(m, Int64))
         
-        x2G = mod((m^2 - 2*xG) ,17)
-        y2G =mod((m * (xG - x2G ) - yG) , 17)
+        x2G = mod((m^2 - 2*xG) ,631)
+        y2G =mod((m * (xG - x2G ) - yG) , 631)
     else
-        m = mod((3 * xG ^ 2 + 2)*(invmod(2 * yG,17) ),17)
-        x2G =mod((m^2 - 2*xG) , 17)
-        y2G =mod((m * (xG - x2G ) - yG) , 17)
+        m = mod((3 * xG ^ 2 + 2)*(invmod(2 * yG,631) ),631)
+        x2G =mod((m^2 - 2*xG) , 631)
+        y2G =mod((m * (xG - x2G ) - yG) , 631)
     end
     
     #gf  = x2G ,y2G
@@ -128,17 +119,18 @@ function mult_2(punto)#OjO point es una tupla
     
 end
 
+mult_2(lis[1])
+#show(mult_2(lis[1]))
 
-#print(mult_2(lis[2]))
-lis_gf = [lis[2],mult_2(lis[2])[1]]
-#print(lis_gf)
+lis_gf = [lis[1],mult_2(lis[1])[1]]
+#show(lis_gf)
+
 for i in 1:length(lis)-2
     append!(lis_gf, suma_puntos(lis_gf[1],lis_gf[length(lis_gf)]))
-end
+  end
 
 push!(lis_gf, (-1,-1)) 
 
-#show(lis_gf)
 #=
 print("->")
 for i in 1:length(lis_gf)
@@ -184,7 +176,27 @@ function  firmar(identificado)
         end
    
     end
+
+    return aux
     
+end
+
+function  buscar_engrupo(identificado)
+
+    d = 1
+
+    aux = 0
+
+    for x in 1:identificado
+        #print(d)
+        #print("\n")
+        aux = d
+        d = d + 1
+        if d%20 == 0
+            d = 1
+        end
+   
+    end
 
     return aux
     
@@ -206,23 +218,25 @@ while input != 0
         global β = parse(Int,readline())
         print("Clave privada generada, recuerda no compartirla con nadie:\n")
     elseif(input == 2)
-         print("Ingresa tu clave privada\n")
-         β2 = parse(Int,readline())
-         a = lis_gf[α]
-         b = lis_gf[β2]
+        print("Ingresa tu clave privada\n")
+        β2 = parse(Int,readline())
+        a = lis_gf[buscar_engrupo(α)]
+        print( buscar_engrupo(β2))
+        print("\n")
+        b = lis_gf[buscar_engrupo(β2)]
 
-         global firma_ma = a
-         global firma_loli = b
-         print("Tu firma digital es:\n")
+        global firma_ma = a
+        global firma_loli = b
+        print("Tu firma digital es:\n")
 
-         print(firma_loli)
-         print("\n")
+        print(firma_loli)
+        print("\n")
     elseif(input == 3)
          print("Ingresa tu clave privada:\n")
          clave = parse(Int,readline())
          #print(firma_loli)
          
-         
+         #=
          print(identificar(firma_loli,α))
          print("\n")
          print(firmar(identificar(firma_loli,α)))
@@ -230,9 +244,10 @@ while input != 0
          print("\n")
          print(lis_gf[firmar(identificar(firma_loli,α))])
          print(lis_gf[firmar(identificar(firma_ma,clave))])
+         =#
 
         if(lis_gf[firmar(identificar(firma_ma,clave))] == lis_gf[firmar(identificar(firma_loli,α))])
-            print("Tu declaración ha sido firmada exitosamente")
+            print("Tu acta ha sido firmada exitosamente")
         else
             print("Error al ingresar tu clave privada, fallo al autentificarte")
         end
