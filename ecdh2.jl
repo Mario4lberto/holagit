@@ -220,10 +220,7 @@ while input != 0
     elseif(input == 2)
         print("Ingresa tu clave privada\n")
         β2 = parse(Int,readline())
-        print(buscar_engrupo(α))
-        print("\n")
-        print(lis_gf[buscar_engrupo(α)])
-        #=
+    
         a = lis_gf[buscar_engrupo(α)]
         print( buscar_engrupo(β2))
         print("\n")
@@ -235,7 +232,7 @@ while input != 0
 
         print(firma_loli)
         print("\n")
-        =#
+        
     elseif(input == 3)
          print("Ingresa tu clave privada:\n")
          clave = parse(Int,readline())
