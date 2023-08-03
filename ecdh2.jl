@@ -171,7 +171,7 @@ function  firmar(identificado)
         #print("\n")
         aux = d
         d = d + 1
-        if d%20 == 0
+        if d%596 == 0
             d = 1
         end
    
@@ -192,7 +192,7 @@ function  buscar_engrupo(identificado)
         #print("\n")
         aux = d
         d = d + 1
-        if d%20 == 0
+        if d%596 == 0
             d = 1
         end
    
@@ -220,6 +220,10 @@ while input != 0
     elseif(input == 2)
         print("Ingresa tu clave privada\n")
         β2 = parse(Int,readline())
+        print(buscar_engrupo(α))
+        print("\n")
+        print(lis_gf[buscar_engrupo(α)])
+        #=
         a = lis_gf[buscar_engrupo(α)]
         print( buscar_engrupo(β2))
         print("\n")
@@ -231,6 +235,7 @@ while input != 0
 
         print(firma_loli)
         print("\n")
+        =#
     elseif(input == 3)
          print("Ingresa tu clave privada:\n")
          clave = parse(Int,readline())
@@ -247,9 +252,9 @@ while input != 0
          =#
 
         if(lis_gf[firmar(identificar(firma_ma,clave))] == lis_gf[firmar(identificar(firma_loli,α))])
-            print("Tu acta ha sido firmada exitosamente")
+            print("Tu acta ha sido firmada exitosamente\n")
         else
-            print("Error al ingresar tu clave privada, fallo al autentificarte")
+            print("Error al ingresar tu clave privada, fallo al autentificarte\n")
         end
 
     
